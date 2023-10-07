@@ -1,0 +1,66 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: lematthe-poi-backend-app-dev
+  annotations:
+    argocd/app-name: lematthe-poi-backend-app-dev
+    backstage.io/kubernetes-id: lematthe-poi-backend-app
+    backstage.io/kubernetes-namespace: lematthe
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: rhdh-gh/lematthe-backend
+    janus-idp.io/tekton-enabled: 'true'
+  tags:
+    - java
+    - quarkus
+    - maven
+    - workshop
+  links:
+    - url: https://console-openshift-console.apps.rosa-x4jc7.l07n.p1.openshiftapps.com/dev-pipelines/ns/lematthe/
+      title: Pipelines
+      icon: web
+    - url: https://console-openshift-console.apps.rosa-x4jc7.l07n.p1.openshiftapps.com/k8s/ns/lematthe/deployments/lematthe-poi-backend-app
+      title: Deployment
+      icon: web
+    - url: https://devspaces.apps.rosa-x4jc7.l07n.p1.openshiftapps.com/#https://github.com/rhdh-gh/lematthe-backend?che-editor=che-incubator/che-code/latest&devfilePath=.devfile-vscode.yaml
+      title: OpenShift Dev Spaces (VS Code)
+      icon: web
+spec:
+  type: service
+  lifecycle: production
+  owner: "user:default/lematthe"
+  system: workshop-system-lematthe
+  providesApis:
+    - backend-api-lematthe
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: workshop-system-lematthe
+  tags:
+    - backstage
+    - janus-idp
+    - openshift
+    - workshop
+    - rh-summit
+spec:
+  owner: "user:default/lematthe"
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: backend-api-lematthe
+  description: API surface used by workshop attendees to initialize and load parks data
+  links:
+    - url: http://lematthe-poi-backend-app-lematthe.apps.rosa-x4jc7.l07n.p1.openshiftapps.com/q/swagger-ui
+      title: Swagger UI
+      icon: web
+    - url: https://github.com/rhdh-gh/lematthe-backend/tree/main/src/main/resources/META-INF/openapi.yaml
+      title: API Spec
+      icon: code
+spec:
+  type: openapi
+  lifecycle: production
+  owner: "user:default/lematthe"
+  system: workshop-system-lematthe
+  definition:
+    $text: https://github.com/rhdh-gh/lematthe-backend/tree/main/src/main/resources/META-INF/openapi.yaml
